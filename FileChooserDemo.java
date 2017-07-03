@@ -20,6 +20,19 @@ public class FileChooserDemo extends JPanel implements ActionListener {
     JTextArea log;
     JFileChooser fc;
     utils U = new utils();
+    
+    
+    File source;
+    File dest; 
+    
+    String path ;
+    String name ;
+    String userHome;
+    String destPathStr ; 
+    boolean chk;
+    
+    
+    
     public FileChooserDemo() {
         super(new BorderLayout());
  
@@ -76,17 +89,17 @@ public class FileChooserDemo extends JPanel implements ActionListener {
             int ret = fileopen.showDialog(null, "Open file");
 
             if (ret == JFileChooser.APPROVE_OPTION) {
-              File source = fileopen.getSelectedFile();
-              String path = fileopen.getSelectedFile().getAbsolutePath();
-              String name = fileopen.getSelectedFile().getName();
+               source = fileopen.getSelectedFile();
+               path = fileopen.getSelectedFile().getAbsolutePath();
+               name = fileopen.getSelectedFile().getName();
               
               System.out.println(source);
               System.out.println(path);
               
-              String userHome = System.getProperty("user.home");
-              String destPathStr = userHome + File.separator + "Downloads" + File.separator + "JCALGUI"; 
-              File dest = new File(destPathStr + name); 
-              boolean chk = utils.fileExists(destPathStr);
+              userHome = System.getProperty("user.home");
+              destPathStr = userHome + File.separator + "Downloads" + File.separator + "JCALGUI"; 
+              dest = new File(destPathStr + name); 
+              chk = utils.fileExists(destPathStr);
               log.append("Folder: "   + destPathStr + " Exists =  "  + chk + newline );
               long start = System.nanoTime();
  
