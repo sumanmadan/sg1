@@ -8,6 +8,9 @@ import java.io.OutputStream;
 
 public class utils {
 
+	private static final Boolean TRUE = null;
+	private static final Boolean FALSE = null;
+
 	/**
 	 * @param args
 	 */
@@ -33,5 +36,42 @@ public class utils {
 	        os.close();
 	    }
 	}
+	
+	protected static boolean fileExists (String destPathStr) {
+		
+		boolean res ;
+		File destPath = new File(destPathStr);
+		 if (destPath.exists() && destPath.isDirectory()) {
+			 
+		        System.out.println("Exists");
+		        //if the file is present then it will show the msg  
+		        res = true;
+		        }
+		        else{
+		        System.out.println("NOT Exists");
+		        //if the file is Not present then it will show the msg
+		        makeDir(destPath);
+		        res = false;
+		}
+			return res;
+	}
 
+
+	private static void makeDir(File destPath) {
+		// TODO Auto-generated method stub
+        System.out.println("creating directory: " + destPath.getName());
+	    boolean result = false;
+        try{
+	       	 destPath.mkdir();
+	         result = true;
+	     } 
+	        catch(SecurityException se){
+	         //handle it
+	        se.printStackTrace();
+	    }        
+	   if(result) {    
+	             System.out.println("DIR created--->" + destPath);  
+	   }
+		
+	}
 }
