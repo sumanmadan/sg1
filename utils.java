@@ -20,9 +20,50 @@ public class utils {
 	}
 	
 	
+
+	
+	
+	
+	
+	
 	protected static void copyFileUsingStream(File source, File dest) throws IOException {
 	    InputStream is = null;
 	    OutputStream os = null;
+	    String lsource=null;
+	    String nsource=null;
+	    
+	    String ldest = null;
+	    String ndest = null;
+	
+	    
+	    if ( source.toString().endsWith("data.dis")) {
+	    	
+	    	
+	    	 lsource = source.toString().replace("data", "limit");
+	    	
+	       
+	         nsource = source.toString().replace(".data.dis", ".nc");
+	         nsource = nsource.replace("data", "nc");
+	         
+	         
+	         ldest = dest.toString().replace(".data.dis", ".limit.dis");
+	         ndest = dest.toString().replace(".data.dis", ".nc");
+	         
+	    
+	    }
+	  
+	 
+	   
+	  
+	    //amd_22PLRS11MA.A1_M632W.00_RS-WETILTH-14LPP.01_FWET_01_3D6UA192SAF1_20170220-093352.data.dis
+	    
+	    System.out.println(" Copying data from "   + "===" + source);
+	    System.out.println(" Copying limit from "   + "===" +lsource);
+	    System.out.println(" Copying nc from " +   "===" + nsource);
+	    
+	    
+	   
+	    
 	    try {
 	        is = new FileInputStream(source);
 	        os = new FileOutputStream(dest);
@@ -35,6 +76,37 @@ public class utils {
 	        is.close();
 	        os.close();
 	    }
+	    
+	    
+	    try {
+	        is = new FileInputStream(lsource);
+	        os = new FileOutputStream(ldest);
+	        byte[] buffer = new byte[1024];
+	        int length;
+	        while ((length = is.read(buffer)) > 0) {
+	            os.write(buffer, 0, length);
+	        }
+	    } finally {
+	        is.close();
+	        os.close();
+	    }
+	    
+	    try {
+	        is = new FileInputStream(nsource);
+	        os = new FileOutputStream(ndest);
+	        byte[] buffer = new byte[1024];
+	        int length;
+	        while ((length = is.read(buffer)) > 0) {
+	            os.write(buffer, 0, length);
+	        }
+	    } finally {
+	        is.close();
+	        os.close();
+	    } 
+	    
+	    System.out.println(" Copyied data to "   + "===" + dest);
+	    System.out.println(" Copyied limit to "   + "===" +ldest);
+	    System.out.println(" Copyied nc to " +   "===" + ndest);
 	}
 	
 	protected static boolean fileExists (String destPathStr) {
@@ -75,3 +147,4 @@ public class utils {
 		
 	}
 }
+
