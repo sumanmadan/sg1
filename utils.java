@@ -10,7 +10,15 @@ public class utils {
 
 	private static final Boolean TRUE = null;
 	private static final Boolean FALSE = null;
-
+	
+	private static String lsource = null;
+	private static String nsource = null;
+	private static String dsource = null;
+	
+	private static String ndest = null;
+	private static String ldest = null;
+	
+	
 	/**
 	 * @param args
 	 */
@@ -22,9 +30,70 @@ public class utils {
 	
 
 	
+	protected static void runFileNames(String source, String dest) {
+		
+      //need to check for string length		
+		 if ( source.toString().endsWith("data.dis")) {
+		    	
+		    	
+	    	 lsource = source.toString().replace("data", "limit");
+	    	
+	       
+	         nsource = source.toString().replace(".data.dis", ".nc");
+	         nsource = nsource.replace("data", "nc");
+	         
+	         
+	         ldest = dest.toString().replace(".data.dis", ".limit.dis");
+	         ndest = dest.toString().replace(".data.dis", ".nc");
+	         
+	    
+	    }
+		
+		
+	}
+	
+	
+	protected static void runFileNames(String source) {
+		
+		
+		 if ( source.toString().endsWith("data.dis")) {
+		    	
+		    	
+	    	 lsource = source.toString().replace("data", "limit");
+	    	
+	       
+	         nsource = source.toString().replace(".data.dis", ".nc");
+	         nsource = nsource.replace("data", "nc");
+	            
+	    
+	    }
+		
+		
+	}
 	
 	
 	
+	
+	public static String getDSource() {
+		
+		return dsource;
+		
+	}
+	
+	
+   public static String getLSource() {
+		
+		return lsource;
+		
+	}
+   
+   public static String getNSource() {
+		
+		return nsource;
+		
+	}
+   
+   
 	
 	protected static void copyFileUsingStream(File source, File dest) throws IOException {
 	    InputStream is = null;
@@ -147,4 +216,5 @@ public class utils {
 		
 	}
 }
+
 
