@@ -1,6 +1,7 @@
 
  
 import java.io.*;
+import java.util.regex.Pattern;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -16,7 +17,7 @@ public class FileChooserDemo extends JPanel implements ActionListener {
 	
 	
     static private final String newline = "\n";
-    JButton openButton, saveButton;
+    JButton openButton, saveButton, runVariableButton;
     JTextArea log;
     JFileChooser fc;
     utils U = new utils();
@@ -31,11 +32,22 @@ public class FileChooserDemo extends JPanel implements ActionListener {
     String destPathStr ; 
     boolean chk;
     
+    String[] fileInfo;
+    String[] folderInfo;
     
+    
+     
+    private void setters() {
+  		// TODO Auto-generated method stub
+    	
+    	userHome = System.getProperty("user.home");
+    	destPathStr = userHome + File.separator + "Downloads" + File.separator + "JCALGUI" + File.separator; 
+  	}
     
     public FileChooserDemo() {
+    	
         super(new BorderLayout());
- 
+        setters(); 
         //Create the log first, because the action listeners
         //need to refer to it.
         log = new JTextArea(5,20);
@@ -63,47 +75,84 @@ public class FileChooserDemo extends JPanel implements ActionListener {
  
         //Create the save button.  We use the image from the JLF
         //Graphics Repository (but we extracted it from the jar).
-        saveButton = new JButton("Save a File...",
-                                 createImageIcon("images/Save16.gif"));
+        saveButton = new JButton("Save a File...", createImageIcon("images/Save16.gif"));
         saveButton.addActionListener(this);
+        
+        
+        runVariableButton = new JButton("set the variables...", createImageIcon("images/Save16.gif"));
+        runVariableButton.addActionListener(this);
+ 
  
         //For layout purposes, put the buttons in a separate panel
         JPanel buttonPanel = new JPanel(); //use FlowLayout
         buttonPanel.add(openButton);
         buttonPanel.add(saveButton);
+        buttonPanel.add(runVariableButton);
  
         //Add the buttons and the log to this panel.
         add(buttonPanel, BorderLayout.PAGE_START);
         add(logScrollPane, BorderLayout.CENTER);
     }
  
-    public void actionPerformed(ActionEvent e) {
+  
+
+	public void actionPerformed(ActionEvent e) {
+		
+		
+		 if (e.getSource() == runVariableButton) {
+			 
+			 log.append("Run Variables Under Construction: "   + newline );
+		 }
  
         //Handle open button action.
         if (e.getSource() == openButton) {
         	  
         	JFileChooser fileopen = new JFileChooser();
             FileFilter filter = new FileNameExtensionFilter("dis files", "dis");
-            fileopen.addChoosableFileFilter(filter);
-
+            //fileopen.addChoosableFileFilter(filter);
+            fileopen.setFileFilter(filter);
             int ret = fileopen.showDialog(null, "Open file");
 
             if (ret == JFileChooser.APPROVE_OPTION) {
                source = fileopen.getSelectedFile();
                path = fileopen.getSelectedFile().getAbsolutePath();
                name = fileopen.getSelectedFile().getName();
-              
-              System.out.println(source);
-              System.out.println(path);
-              
-              userHome = System.getProperty("user.home");
-              destPathStr = userHome + File.separator + "Downloads" + File.separator + "JCALGUI"; 
-              dest = new File(destPathStr + name); 
-              chk = utils.fileExists(destPathStr);
-              log.append("Folder: "   + destPathStr + " Exists =  "  + chk + newline );
-              long start = System.nanoTime();
+               //String pattern = Pattern.quote(System.getProperty("file.separator"));
+               String pattern = "_";  
+               fileInfo = source.toString().split(pattern);
+               System.out.println(source);
+               System.out.println(path);
+               
+               pattern = Pattern.quote(System.getProperty("file.separator"));
+               folderInfo = source.toString().split(pattern);
+               
+               //FAB8_amd_22PLRS11MA.A1_M632W.00_RS-WETILTH-14LPP.01_FWET_01_3D6UA192SAF1_20170220-093352.data.dis
+               log.append("Customer : "   + fileInfo[1]+ newline );
+               log.append("ProductID : "   + fileInfo[2]+ newline );
+               log.append("Lot : "   + fileInfo[3]+ newline );
+               log.append("PD : "   + fileInfo[4]+ newline );
+               log.append("Insertion : "   + fileInfo[5]+ newline );
+               log.append("Wafer : "   + fileInfo[6]+ newline );
+               log.append("Scribe : "   + fileInfo[7]+ newline );
+               log.append("DateTime : "   + fileInfo[8]+ newline );
+               //userHome = System.getProperty("user.home");
+               //destPathStr = userHome + File.separator + "Downloads" + File.separator + "JCALGUI" +  File.separator; 
+               dest = new File(destPathStr + name); 
+               chk = utils.fileExists(destPathStr);
+               log.append("Folder: "   + destPathStr + " Exists =  "  + chk + newline );
+               long start = System.nanoTime();
  
-              //utils.copyFileUsingStream(source, dest);
+              try {
+            
+                  	  
+				utils.copyFileUsingStream(source, dest);
+				
+				
+				//Copy 
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			  log.append(source + " Copied to " + "Folder: "   + destPathStr   + newline );
               
               //System.out.println("Time taken by Stream Copy = "+(System.nanoTime()-start));
