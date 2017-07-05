@@ -1,5 +1,6 @@
 
  
+ 
 import java.io.*;
 import java.util.regex.Pattern;
 import java.awt.*;
@@ -30,6 +31,12 @@ public class FileChooserDemo extends JPanel implements ActionListener {
     String name ;
     String userHome;
     String destPathStr ; 
+    
+    String lArg;
+    String dArg;
+    String ncArg;
+    String JConfigArg;
+    
     boolean chk;
     
     String[] fileInfo;
@@ -80,6 +87,7 @@ public class FileChooserDemo extends JPanel implements ActionListener {
         
         
         runVariableButton = new JButton("set the variables...", createImageIcon("images/Save16.gif"));
+        runVariableButton.setEnabled(false);
         runVariableButton.addActionListener(this);
  
  
@@ -102,11 +110,15 @@ public class FileChooserDemo extends JPanel implements ActionListener {
 		 if (e.getSource() == runVariableButton) {
 			 
 			 log.append("Run Variables Under Construction: "   + newline );
+			 log.append("Data dis arguement .... " +  utils.getDSource());
+			 log.append("Limit dis arguement .... " + utils.getLSource());
+			 log.append("NC  arguement .... " + utils.getNSource());
 		 }
  
         //Handle open button action.
         if (e.getSource() == openButton) {
-        	  
+        	
+        	runVariableButton.setEnabled(true);
         	JFileChooser fileopen = new JFileChooser();
             FileFilter filter = new FileNameExtensionFilter("dis files", "dis");
             //fileopen.addChoosableFileFilter(filter);
@@ -146,7 +158,7 @@ public class FileChooserDemo extends JPanel implements ActionListener {
             
                   	  
 				utils.copyFileUsingStream(source, dest);
-				
+				utils.runFileNames(source.toString());
 				
 				//Copy 
 			} catch (Exception e1) {
@@ -159,7 +171,7 @@ public class FileChooserDemo extends JPanel implements ActionListener {
             }
             	
             	
-            	
+            
             	
            
           
