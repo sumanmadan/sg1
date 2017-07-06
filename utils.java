@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,10 +15,15 @@ public class utils {
 	private static String lsource = null;
 	private static String nsource = null;
 	private static String dsource = null;
+	private static String jcsource = null;
 	
 	private static String ndest = null;
 	private static String ldest = null;
+	private static String ddest = null;
+	private static String jcdest = null;
 	
+	private static String userHome = null;
+	private static String destPathStr = null;
 	
 	/**
 	 * @param args
@@ -28,50 +34,34 @@ public class utils {
 	}
 	
 	
+	
+	public  utils () {
+		 
+		 
+		
+		
+	}
+	
+	
 
 	
-	protected static void runFileNames(String source, String dest) {
-		
-      //need to check for string length		
-		 if ( source.toString().endsWith("data.dis")) {
-		    	
-		    	
-	    	 lsource = source.toString().replace("data", "limit");
-	    	
-	       
-	         nsource = source.toString().replace(".data.dis", ".nc");
-	         nsource = nsource.replace("data", "nc");
-	         
-	         
-	         ldest = dest.toString().replace(".data.dis", ".limit.dis");
-	         ndest = dest.toString().replace(".data.dis", ".nc");
-	         
-	    
-	    }
-		
-		
-	}
+
 	
 	
-	protected static void runFileNames(String source) {
-		
-		
-		 if ( source.toString().endsWith("data.dis")) {
-		    	
-		    	
-	    	 lsource = source.toString().replace("data", "limit");
-	    	
-	       
-	         nsource = source.toString().replace(".data.dis", ".nc");
-	         nsource = nsource.replace("data", "nc");
-	            
-	    
-	    }
-		
-		
-	}
 	
-	
+    public static String getUserHome() {
+    	 
+    	userHome = System.getProperty("user.home");
+		return userHome;
+		
+   }
+    
+    public static String getDestPathStr() {
+		
+    	destPathStr = userHome + File.separator + "Downloads" + File.separator + "JCALGUI" + File.separator; 
+ 		return destPathStr;
+ 		
+    }
 	
 	
 	public static String getDSource() {
@@ -93,31 +83,56 @@ public class utils {
 		
 	}
    
+   public static String getDDest() {
+		
+		return ddest;
+		
+	}
+	
+	
+  public static String getLDest() {
+		
+		return ldest;
+		
+	}
+  
+  public static String getNDest() {
+		
+		return ndest;
+		
+  }
+  
+   
+   
+  public static String getJCSource() {
+		
+		return jcsource;
+		
+	}
+
+public static String getJCDest() {
+		
+		return jcdest;
+		
+}
+
+ 
    
 	
 	protected static void copyFileUsingStream(File source, File dest) throws IOException {
 	    InputStream is = null;
 	    OutputStream os = null;
-	    String lsource=null;
-	    String nsource=null;
-	    
-	    String ldest = null;
-	    String ndest = null;
+	   
 	
 	    
 	    if ( source.toString().endsWith("data.dis")) {
-	    	
-	    	
-	    	 lsource = source.toString().replace("data", "limit");
-	    	
-	       
-	         nsource = source.toString().replace(".data.dis", ".nc");
-	         nsource = nsource.replace("data", "nc");
-	         
-	         
-	         ldest = dest.toString().replace(".data.dis", ".limit.dis");
-	         ndest = dest.toString().replace(".data.dis", ".nc");
-	         
+	    	dsource = source.toString();
+	    	lsource = source.toString().replace("data", "limit");
+	    	nsource = source.toString().replace(".data.dis", ".nc");
+	        nsource = nsource.replace("data", "nc");
+	        ldest = dest.toString().replace(".data.dis", ".limit.dis");
+	        ndest = dest.toString().replace(".data.dis", ".nc");
+	        ddest = dest.toString();
 	    
 	    }
 	  
@@ -215,6 +230,74 @@ public class utils {
 	   }
 		
 	}
+
+
+
+	public static void copyConfigFileUsingStream(File source, File dest) throws IOException {
+		// TODO Auto-generated method stub
+		 InputStream is = null;
+		 OutputStream os = null;
+		   
+		  //JCal Config Copying
+		    
+		 System.out.println(" Copying data from "   + "===" + source);
+		
+		  jcsource = source.toString();
+		   
+		    
+		    try {
+		        is = new FileInputStream(source);
+		        os = new FileOutputStream(dest);
+		        byte[] buffer = new byte[1024];
+		        int length;
+		        while ((length = is.read(buffer)) > 0) {
+		            os.write(buffer, 0, length);
+		        }
+		    } finally {
+		        is.close();
+		        os.close();
+		    }
+		    
+		    
+		    jcdest = dest.toString();
+		    
+		    System.out.println(" Copyied data to "   + "===" + dest);
+		   
+		
+		
+		
+		
+	}
+
+
+	public static void prepJConfigLocal(File source) {
+		// TODO Auto-generated method stub
+		
+		   jcdest = source.toString();
+		  
+		
+	}
+	
+	
+	
+
+	public static void prepFileLocal(File source) {
+		// TODO Auto-generated method stub
+		
+		   String dest = source.toString();
+		   if ( source.toString().endsWith("data.dis")) {
+		    	dsource = source.toString();
+		    	lsource = source.toString().replace("data", "limit");
+		    	nsource = source.toString().replace(".data.dis", ".nc");
+		        nsource = nsource.replace("data", "nc");
+		        ldest = dest.toString().replace(".data.dis", ".limit.dis");
+		        ndest = dest.toString().replace(".data.dis", ".nc");
+		        ddest = dest.toString();
+		    
+		    }
+		
+	}
 }
+
 
 
