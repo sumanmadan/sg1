@@ -1,6 +1,5 @@
 
  
- 
 import java.io.*;
 import java.util.regex.Pattern;
 import java.awt.*;
@@ -18,9 +17,12 @@ public class FileChooserDemo extends JPanel implements ActionListener {
 	
 	
     static private final String newline = "\n";
-    JButton openButton, saveButton, runVariableButton;
+    JButton openButton, choseLocalButton,openJCButton, choseLocalJCButton;
     JTextArea log;
     JFileChooser fc;
+    JFileChooser fileopen;
+    FileFilter filter;
+    
     utils U = new utils();
     
     
@@ -38,23 +40,23 @@ public class FileChooserDemo extends JPanel implements ActionListener {
     String JConfigArg;
     
     boolean chk;
+    int ret;
     
     String[] fileInfo;
     String[] folderInfo;
     
     
      
-    private void setters() {
-  		// TODO Auto-generated method stub
-    	
-    	userHome = System.getProperty("user.home");
-    	destPathStr = userHome + File.separator + "Downloads" + File.separator + "JCALGUI" + File.separator; 
-  	}
+   
     
     public FileChooserDemo() {
     	
         super(new BorderLayout());
-        setters(); 
+        
+        userHome = utils.getUserHome();
+        destPathStr = utils.getDestPathStr();
+        
+     
         //Create the log first, because the action listeners
         //need to refer to it.
         log = new JTextArea(5,20);
@@ -77,29 +79,74 @@ public class FileChooserDemo extends JPanel implements ActionListener {
  
         //Create the open button.  We use the image from the JLF
         //Graphics Repository (but we extracted it from the jar).
-        openButton = new JButton("Open a File...", createImageIcon("images/Open16.gif"));
+        openButton = new JButton("Fetch Public Files...", createImageIcon("images/Open16.gif"));
         openButton.addActionListener(this);
  
+        
+        openJCButton = new JButton("Fetch JCal Config...", createImageIcon("images/Save16.gif"));
+        openJCButton.setEnabled(false);
+        openJCButton.addActionListener(this);
+        
+        
         //Create the save button.  We use the image from the JLF
         //Graphics Repository (but we extracted it from the jar).
-        saveButton = new JButton("Save a File...", createImageIcon("images/Save16.gif"));
-        saveButton.addActionListener(this);
+        choseLocalButton = new JButton("Load Local Files...", createImageIcon("images/Save16.gif"));
+        choseLocalButton.addActionListener(this);
         
         
-        runVariableButton = new JButton("set the variables...", createImageIcon("images/Save16.gif"));
-        runVariableButton.setEnabled(false);
-        runVariableButton.addActionListener(this);
+        choseLocalJCButton = new JButton("Load Local JCal Config...", createImageIcon("images/Save16.gif"));
+        choseLocalJCButton.addActionListener(this);
+        
  
  
         //For layout purposes, put the buttons in a separate panel
         JPanel buttonPanel = new JPanel(); //use FlowLayout
-        buttonPanel.add(openButton);
-        buttonPanel.add(saveButton);
-        buttonPanel.add(runVariableButton);
+       /* buttonPanel.add(openButton);
+        buttonPanel.add(openJCButton);
+        
+        buttonPanel.add(choseLocalButton);
+        buttonPanel.add(choseLocalJCButton);*/
+        
+        JSeparator js = new JSeparator();
+        
+        JLabel jl1 = new JLabel("Chose from your dis from WET Public "  );
+        JLabel jl2 = new JLabel("Chose from your locally stored files " + destPathStr);
+        
+        Box box = Box.createVerticalBox();
+        
+        box.add(Box.createVerticalStrut(10));  
+        box.add(Box.createHorizontalStrut(10));
+        
+        box.add(jl1);
+        
+        box.add(openButton);
+        box.add(Box.createVerticalStrut(10));  
+        
+        
+        
+        
+        box.add(openJCButton);
+        box.add(Box.createVerticalStrut(10));  
+        
+        box.add(js);
+        
+        box.add(Box.createHorizontalStrut(10));
+        
+        box.add(jl2);
+        
+        box.add(choseLocalButton);
+        
+        box.add(Box.createVerticalStrut(10));  
+        box.add(choseLocalJCButton);
  
         //Add the buttons and the log to this panel.
-        add(buttonPanel, BorderLayout.PAGE_START);
+        //add(buttonPanel, BorderLayout.PAGE_START);
+        add(box, BorderLayout.PAGE_START);
         add(logScrollPane, BorderLayout.CENTER);
+        
+        
+       
+        
     }
  
   
@@ -107,23 +154,96 @@ public class FileChooserDemo extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		
-		 if (e.getSource() == runVariableButton) {
+		if (e.getSource() == choseLocalJCButton) {
+			
+			
+			 JFileChooser fileopen = new JFileChooser();
+	            int ret = fileopen.showDialog(null, "Open file");
+
+	            if (ret == JFileChooser.APPROVE_OPTION) {
+	               source = fileopen.getSelectedFile();
+	               path = fileopen.getSelectedFile().getAbsolutePath();
+	               name = fileopen.getSelectedFile().getName();
+	              
+	               long start = System.nanoTime();
+	               
+	               try {
+	                   
+	                  	  
+	   				utils.prepJConfigLocal(source);
+	   			    dArg = utils.getDDest();
+			        lArg = utils.getLDest();
+			        ncArg = utils.getNDest();
+			        JConfigArg = utils.getJCDest();
+		 
+			        log.append("Run Variables Under Construction: "   + newline );
+			        log.append("Data dis arguement .... " +  dArg + newline);
+			        log.append("Limit dis arguement .... " + lArg + newline);
+			        log.append("NC arguement .... " + ncArg + newline);
+			        log.append("Config File arguement : "   + JConfigArg + newline );
+   				
+	   				
+	               }
+	               catch (Exception e1) {
+		   				// TODO Auto-generated catch block
+		   				e1.printStackTrace();
+	               }
+			
+	            }
+		}
+		
+		 if (e.getSource() == openJCButton) {
 			 
-			 log.append("Run Variables Under Construction: "   + newline );
-			 log.append("Data dis arguement .... " +  utils.getDSource());
-			 log.append("Limit dis arguement .... " + utils.getLSource());
-			 log.append("NC  arguement .... " + utils.getNSource());
+			 
+			
+			    JFileChooser fileopen = new JFileChooser();
+	            int ret = fileopen.showDialog(null, "Open file");
+
+	            if (ret == JFileChooser.APPROVE_OPTION) {
+	               source = fileopen.getSelectedFile();
+	               path = fileopen.getSelectedFile().getAbsolutePath();
+	               name = fileopen.getSelectedFile().getName();
+	              
+	               long start = System.nanoTime();
+	               
+	               try {
+	                   
+	                  	  
+	   				utils.copyConfigFileUsingStream(source, dest);
+	   				
+	   				
+	   				
+	   			      dArg = utils.getDDest();
+				      lArg = utils.getLDest();
+				      ncArg = utils.getNDest();
+				      JConfigArg = utils.getJCDest();
+			 
+				      log.append("Run Variables Under Construction: "   + newline );
+				      log.append("Data dis arguement .... " +  dArg + newline);
+				      log.append("Limit dis arguement .... " + lArg + newline);
+				      log.append("NC arguement .... " + ncArg + newline);
+				      log.append("Config File arguement : "   + JConfigArg + newline );
+	   				
+	   				
+	   				//Copy 
+	   			} catch (Exception e1) {
+	   				// TODO Auto-generated catch block
+	   				e1.printStackTrace();
+	   			}
+			
+	           }
+			 
 		 }
  
         //Handle open button action.
         if (e.getSource() == openButton) {
         	
-        	runVariableButton.setEnabled(true);
-        	JFileChooser fileopen = new JFileChooser();
-            FileFilter filter = new FileNameExtensionFilter("dis files", "dis");
+        	openJCButton.setEnabled(true);
+        	fileopen = new JFileChooser();
+            filter = new FileNameExtensionFilter("dis files", "dis");
             //fileopen.addChoosableFileFilter(filter);
             fileopen.setFileFilter(filter);
-            int ret = fileopen.showDialog(null, "Open file");
+            ret = fileopen.showDialog(null, "Open file");
 
             if (ret == JFileChooser.APPROVE_OPTION) {
                source = fileopen.getSelectedFile();
@@ -158,7 +278,7 @@ public class FileChooserDemo extends JPanel implements ActionListener {
             
                   	  
 				utils.copyFileUsingStream(source, dest);
-				utils.runFileNames(source.toString());
+				
 				
 				//Copy 
 			} catch (Exception e1) {
@@ -176,17 +296,63 @@ public class FileChooserDemo extends JPanel implements ActionListener {
            
           
         //Handle save button action.
-        } else if (e.getSource() == saveButton) {
-            int returnVal = fc.showSaveDialog(FileChooserDemo.this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                //This is where a real application would save the file.
-                log.append("Saving: " + file.getName() + "." + newline);
-            } else {
-                log.append("Save command cancelled by user." + newline);
+        } else if (e.getSource() == choseLocalButton) {
+        	
+        	openJCButton.setEnabled(true);
+        	fileopen = new JFileChooser();
+            filter = new FileNameExtensionFilter("dis files", "dis");
+            //fileopen.addChoosableFileFilter(filter);
+            fileopen.setFileFilter(filter);
+            ret = fileopen.showDialog(null, "Open file");
+
+            if (ret == JFileChooser.APPROVE_OPTION) {
+               source = fileopen.getSelectedFile();
+               path = fileopen.getSelectedFile().getAbsolutePath();
+               name = fileopen.getSelectedFile().getName();
+               //String pattern = Pattern.quote(System.getProperty("file.separator"));
+               String pattern = "_";  
+               fileInfo = source.toString().split(pattern);
+               System.out.println(source);
+               System.out.println(path);
+               
+               pattern = Pattern.quote(System.getProperty("file.separator"));
+               folderInfo = source.toString().split(pattern);
+               
+               //FAB8_amd_22PLRS11MA.A1_M632W.00_RS-WETILTH-14LPP.01_FWET_01_3D6UA192SAF1_20170220-093352.data.dis
+               log.append("Customer : "   + fileInfo[1]+ newline );
+               log.append("ProductID : "   + fileInfo[2]+ newline );
+               log.append("Lot : "   + fileInfo[3]+ newline );
+               log.append("PD : "   + fileInfo[4]+ newline );
+               log.append("Insertion : "   + fileInfo[5]+ newline );
+               log.append("Wafer : "   + fileInfo[6]+ newline );
+               log.append("Scribe : "   + fileInfo[7]+ newline );
+               log.append("DateTime : "   + fileInfo[8]+ newline );
+               //userHome = System.getProperty("user.home");
+               //destPathStr = userHome + File.separator + "Downloads" + File.separator + "JCALGUI" +  File.separator; 
+              
+             
+             
+               long start = System.nanoTime();
+ 
+              try {
+            
+                  	  
+				utils.prepFileLocal(source);
+				
+				
+				//Copy 
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			  log.append(source + " Copied to " + "Folder: "   + destPathStr   + newline );
+        	
+        	
             }
-            log.setCaretPosition(log.getDocument().getLength());
+        	
         }
+       
+            
     }
  
     /** Returns an ImageIcon, or null if the path was invalid. */
