@@ -25,6 +25,20 @@ public class utils {
 	private static String userHome = null;
 	private static String destPathStr = null;
 	
+	
+	
+	  static String customerFileInfo = "";
+	  static String productIDFileInfo ="";
+	  static String lotFileInfo= "";
+	  static String PDFileInfo = "";
+	  static String InsertionFileInfo = "";
+	  static String WaferFileInfo = "";
+	  static String ScribeFileInfo = "";
+	  static String DateTimeFileInfo = "";
+   
+	
+	
+	
 	/**
 	 * @param args
 	 */
@@ -45,7 +59,61 @@ public class utils {
 	
 
 	
-
+	public static String getCustomerFileInfo() {
+		
+		return customerFileInfo;
+		
+	}
+	
+	
+	public static String getProductIDFileInfo() {
+		
+		return productIDFileInfo;
+		
+	}
+	
+	
+	public static String getlotFileInfo() {
+		
+		return lotFileInfo;
+		
+	}
+	  
+	
+   public static String getPDFileInfo() {
+		
+		return PDFileInfo;
+		
+	}
+	
+   public static String getInsertionFileInfo() {
+		
+		return InsertionFileInfo;
+		
+	}
+   
+   
+   public static String getWaferFileInfo() {
+		
+		return WaferFileInfo;
+		
+	}
+   
+   
+   public static String getScribeFileInfo() {
+		
+		return WaferFileInfo;
+		
+	}
+   
+   
+   public static String getDateTimeFileInfo() {
+		
+		return DateTimeFileInfo;
+		
+	}
+	  
+	  
 	
 	
 	
@@ -279,12 +347,38 @@ public static String getJCDest() {
 	}
 	
 	
+	public static void splitFileInfo(String file)
+	{
+		
+		    String splitFileInfo[] = file.toString().split("_");
+         
+		    String customerFileInfo = "";
+		    String productIDFileInfo ="";
+		    String lotFileInfo= "";
+		    String PDFileInfo = "";
+		    String InsertionFileInfo = "";
+		    String WaferFileInfo = "";
+		    String ScribeFileInfo = "";
+		    String DateTimeFileInfo = "";
+		    customerFileInfo = splitFileInfo[0];
+		    productIDFileInfo =splitFileInfo[1];
+		    lotFileInfo= splitFileInfo[2];
+		    PDFileInfo = splitFileInfo[3];
+		    InsertionFileInfo = splitFileInfo[3];
+		    WaferFileInfo = "";
+		    ScribeFileInfo = "";
+		    DateTimeFileInfo = "";
+		    
+		   
+		
+	}
 	
 
 	public static void prepFileLocal(File source) {
 		// TODO Auto-generated method stub
 		
 		   String dest = source.toString();
+		   System.out.println("Debug here " + dest);
 		   if ( source.toString().endsWith("data.dis")) {
 		    	dsource = source.toString();
 		    	lsource = source.toString().replace("data", "limit");
@@ -298,6 +392,3 @@ public static String getJCDest() {
 		
 	}
 }
-
-
-
