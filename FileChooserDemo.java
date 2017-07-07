@@ -17,7 +17,7 @@ public class FileChooserDemo extends JPanel implements ActionListener {
 	
 	
     static private final String newline = "\n";
-    JButton openButton, choseLocalButton,openJCButton, choseLocalJCButton;
+    JButton openButton, choseLocalButton,openJCButton, choseLocalJCButton, JCalparaSOS;
     JTextArea log;
     JFileChooser fc;
     JFileChooser fileopen;
@@ -98,7 +98,9 @@ public class FileChooserDemo extends JPanel implements ActionListener {
         choseLocalJCButton.addActionListener(this);
         
  
- 
+        JCalparaSOS =  new JButton("Sprint JCal...", createImageIcon("images/Save16.gif"));
+        JCalparaSOS.addActionListener(this);
+        
         //For layout purposes, put the buttons in a separate panel
         JPanel buttonPanel = new JPanel(); //use FlowLayout
        /* buttonPanel.add(openButton);
@@ -107,10 +109,15 @@ public class FileChooserDemo extends JPanel implements ActionListener {
         buttonPanel.add(choseLocalButton);
         buttonPanel.add(choseLocalJCButton);*/
         
-        JSeparator js = new JSeparator();
+        JSeparator js1 = new JSeparator();
+        JSeparator js2 = new JSeparator();
         
-        JLabel jl1 = new JLabel("Chose from your dis from WET Public "  );
-        JLabel jl2 = new JLabel("Chose from your locally stored files " + destPathStr);
+        JLabel jl1 = new JLabel("Chose your dis from WET Public "  );
+        jl1.setForeground(Color.BLUE);
+        JLabel jl2 = new JLabel("Chose your dis from Local " + destPathStr);
+        jl2.setForeground(Color.BLUE);
+        JLabel jl3 = new JLabel("get set go JCalpara");
+        jl3.setForeground(Color.BLUE);
         
         Box box = Box.createVerticalBox();
         
@@ -121,29 +128,30 @@ public class FileChooserDemo extends JPanel implements ActionListener {
         
         box.add(openButton);
         box.add(Box.createVerticalStrut(10));  
-        
-        
-        
-        
         box.add(openJCButton);
         box.add(Box.createVerticalStrut(10));  
-        
-        box.add(js);
-        
+        box.add(js1);
         box.add(Box.createHorizontalStrut(10));
         
         box.add(jl2);
-        
         box.add(choseLocalButton);
-        
         box.add(Box.createVerticalStrut(10));  
         box.add(choseLocalJCButton);
+        box.add(Box.createVerticalStrut(10));  
+        
+        
+        box.add(js2);
+        box.add(Box.createHorizontalStrut(10));
+        box.add(jl3);
+        box.add(JCalparaSOS);
+        
+        
  
         //Add the buttons and the log to this panel.
         //add(buttonPanel, BorderLayout.PAGE_START);
         add(box, BorderLayout.PAGE_START);
         add(logScrollPane, BorderLayout.CENTER);
-        
+        box.add(Box.createVerticalStrut(10));  
         
        
         
@@ -152,6 +160,30 @@ public class FileChooserDemo extends JPanel implements ActionListener {
   
 
 	public void actionPerformed(ActionEvent e) {
+		
+		
+		if (e.getSource() == JCalparaSOS) {
+			
+			dArg = utils.getDDest();
+	        lArg = utils.getLDest();
+	        ncArg = utils.getNDest();
+	        JConfigArg = utils.getJCDest();
+	        
+	        if ( dArg ==null || lArg ==null || ncArg ==null || JConfigArg ==null ) {
+	        	
+	        	log.append("You forgot to chose your data files "   + newline );
+	        } else {
+ 
+	        log.append("Run Variables Under Construction: "   + newline );
+	        log.append("Data dis arguement .... " +  dArg + newline);
+	        log.append("Limit dis arguement .... " + lArg + newline);
+	        log.append("NC arguement .... " + ncArg + newline);
+	        log.append("Config File arguement .... : "   + JConfigArg + newline );
+	        log.append("Prepared to run Jcalpara.... "  + newline );
+	        
+	        }
+			
+		}
 		
 		
 		if (e.getSource() == choseLocalJCButton) {
@@ -169,12 +201,12 @@ public class FileChooserDemo extends JPanel implements ActionListener {
 	               
 	               try {
 	                   
-	                  	  
-	   				utils.prepJConfigLocal(source);
-	   			    dArg = utils.getDDest();
-			        lArg = utils.getLDest();
-			        ncArg = utils.getNDest();
-			        JConfigArg = utils.getJCDest();
+	            	   
+	            	 dArg = utils.getDDest();
+				     lArg = utils.getLDest();
+				     ncArg = utils.getNDest();
+				     utils.prepJConfigLocal(source);
+	   			     JConfigArg = utils.getJCDest();  
 		 
 			        log.append("Run Variables Under Construction: "   + newline );
 			        log.append("Data dis arguement .... " +  dArg + newline);
