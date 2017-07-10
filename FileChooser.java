@@ -167,6 +167,10 @@ public class FileChooser extends JPanel implements ActionListener {
         JLabel jl4 = new JLabel("get set go JCalpara");
         jl4.setForeground(Color.BLUE);
         
+        JTextField jTxt = new JTextField();
+        jTxt.setBounds(120, 10, 200, 20);
+
+        
         Box box = Box.createVerticalBox();
         
         box.add(Box.createVerticalStrut(10));  
@@ -192,6 +196,8 @@ public class FileChooser extends JPanel implements ActionListener {
         box.add(Box.createHorizontalStrut(10));
         box.add(jspane);
         box.add(Box.createVerticalStrut(10)); 
+        
+        box.add(jTxt);
         
         box.add(js4);
         box.add(Box.createHorizontalStrut(10));
