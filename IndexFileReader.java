@@ -3,8 +3,10 @@ import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 
 public class IndexFileReader {
@@ -17,9 +19,9 @@ public class IndexFileReader {
 	
 	static HashMap<String, String> pdList = new HashMap<String, String>();
 	
-	static HashMap<String, String> lotList = new HashMap<String, String>();
+	static HashMap<String, ArrayList > lotList = new HashMap<String, ArrayList>();
 	
-	static HashMap<String, String> waferList = new HashMap<String, String>();
+	static HashMap<String, ArrayList > waferList = new HashMap<String, ArrayList>();
 	
 	static HashMap<String, String> scribeList = new HashMap<String, String>();
 	
@@ -36,6 +38,8 @@ public class IndexFileReader {
     static String ScribeFileInfo = "";
     static String DateTimeFileInfo = "";
     
+    static ArrayList lotAL = new ArrayList();
+    static ArrayList waferAL = new ArrayList();
     
     public IndexFileReader() throws IOException {
     	
@@ -62,6 +66,29 @@ public class IndexFileReader {
 		
 		return productList;
 	}
+	
+	
+	
+	public static ArrayList printLotList(String productid) {
+		// TODO Auto-generated method stub
+		//p.1 => l.1, l.2, l.3
+		String p = "";
+		
+		ArrayList l = new ArrayList();
+		for (Entry<String, ArrayList> entry : lotList.entrySet()) {
+		     
+			p = entry.getKey();
+		    if ( p.trim().startsWith(productid)) {	
+		    	System.out.println("Testonmg");
+		    	
+		    	l.addAll(entry.getValue());
+		    }
+		}
+		
+		return l;
+		
+	}
+
 
 	public static void readFile() throws IOException {
 		utils u = new utils();
@@ -92,19 +119,59 @@ public class IndexFileReader {
 				u.splitFileInfo(splitLine[1]);
 				
 				productIDFileInfo = u.getProductIDFileInfo();
-				System.out.println("********ccc***"  + u.getProductIDFileInfo());
-				lotFileInfo = utils.getlotFileInfo();
-				PDFileInfo = utils.getPDFileInfo();
-				InsertionFileInfo = utils.getInsertionFileInfo();
-				WaferFileInfo = utils.getWaferFileInfo();
+			
+				lotFileInfo = u.getlotFileInfo();
 				
+				PDFileInfo = u.getPDFileInfo();
+				InsertionFileInfo = u.getInsertionFileInfo();
+				WaferFileInfo = u.getWaferFileInfo();
+				
+				
+				
+				
+				 if ( waferList.containsKey(lotFileInfo)) {
+					  waferAL = waferList.get(lotFileInfo);
+					  waferList.remove(lotFileInfo);
+					  waferAL = new ArrayList();
+					  
+					  if(!waferAL.contains(lotFileInfo))
+						  waferAL.add(lotFileInfo);
+					  waferAL.add(lotFileInfo);
+					  
+					  waferList.put(lotFileInfo, waferAL);
+				 }else {
+					 //new productid key
+					 waferAL = new ArrayList();
+					 if(!waferAL.contains(lotFileInfo))
+						 waferAL.add(lotFileInfo);
+					 waferList.put(lotFileInfo, waferAL);
+				 }
+				
+				
+				 
+				 if ( lotList.containsKey(productIDFileInfo)) {
+					  lotAL = lotList.get(productIDFileInfo);
+					  lotList.remove(productIDFileInfo);
+					  lotAL = new ArrayList();
+					  
+					  if(!lotAL.contains(lotFileInfo))
+							 lotAL.add(lotFileInfo);
+					  lotAL.add(lotFileInfo);
+					  
+					  lotList.put(productIDFileInfo, lotAL);
+				 }else {
+					 //new productid key
+					 lotAL = new ArrayList();
+					 if(!lotAL.contains(lotFileInfo))
+						 lotAL.add(lotFileInfo);
+					 lotList.put(productIDFileInfo, lotAL);
+				 }
+				 
 				if ( productList.containsKey(productIDFileInfo)) {
 					
 					productList.remove(productIDFileInfo);
 					productList.put(productIDFileInfo, productIDFileInfo);
 				
-					
-			
 				} else {
 					productList.put(productIDFileInfo, productIDFileInfo);
 					
