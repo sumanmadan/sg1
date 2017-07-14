@@ -68,6 +68,7 @@ public class utils {
 	
 	public static String getProductIDFileInfo() {
 		
+		System.out.println("yyyyyyyyy " + productIDFileInfo);
 		return productIDFileInfo;
 		
 	}
@@ -350,26 +351,21 @@ public static String getJCDest() {
 	public static void splitFileInfo(String file)
 	{
 		
+		
+		 
+		//FAB8_amd_ZEPPLN14MJ.H0_M73N5.00_LV-WETILTH-14LPP.01_FWET_13_BBASW008MVB2_20170514-233702
 		    String splitFileInfo[] = file.toString().split("_");
-         
-		    String customerFileInfo = "";
-		    String productIDFileInfo ="";
-		    String lotFileInfo= "";
-		    String PDFileInfo = "";
-		    String InsertionFileInfo = "";
-		    String WaferFileInfo = "";
-		    String ScribeFileInfo = "";
-		    String DateTimeFileInfo = "";
-		    customerFileInfo = splitFileInfo[0];
-		    productIDFileInfo =splitFileInfo[1];
-		    lotFileInfo= splitFileInfo[2];
+           
+		    customerFileInfo = splitFileInfo[1];
+		    productIDFileInfo =splitFileInfo[2];
+		    lotFileInfo= splitFileInfo[3];
 		    PDFileInfo = splitFileInfo[3];
 		    InsertionFileInfo = splitFileInfo[3];
-		    WaferFileInfo = "";
-		    ScribeFileInfo = "";
-		    DateTimeFileInfo = "";
+		    WaferFileInfo = splitFileInfo[4];
+		    ScribeFileInfo = splitFileInfo[5];
+		    DateTimeFileInfo = splitFileInfo[6];
 		    
-		   
+		    System.out.println("Did it come here " + productIDFileInfo);
 		
 	}
 	
@@ -392,3 +388,4 @@ public static String getJCDest() {
 		
 	}
 }
+
